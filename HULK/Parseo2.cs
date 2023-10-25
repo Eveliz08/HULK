@@ -19,6 +19,7 @@ public static bool Es_un_nombre_valido(string identificador)
 }
 public static string Variable_X_Valor(string cuerpo, string variable, string valor_variable)
     {
+        variable = variable.Trim();
         valor_variable = HULK.Identifier(valor_variable);
         for (int i = 0; i < cuerpo.Length; i++)
         {

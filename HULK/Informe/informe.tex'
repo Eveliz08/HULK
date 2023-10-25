@@ -1,0 +1,135 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+\graphicspath{{img/}}
+\selectlanguage{spanish}
+
+\title{\textbf{Informe escrito de Proyecto de Programación II: Intérprete para HULK} }
+\author{Eveliz Espinaco Milián}
+\date{Grupo C112}
+
+\begin{document}
+\thispagestyle{empty} 
+\maketitle
+
+\vspace{4cm}
+\begin{center}
+    Primer año de Lic. en Ciencia de la Computación \\ Facultad de Matemática y Computación \\ Universidad de La Habana \\ Curso 2023-2024
+\end{center}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale= 0.53]{R.jpg}
+\end{figure}
+
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Introducción}
+
+HULK es un lenguaje de programación imperativo, funcional, estático y fuertemente tipado. Casi todas las instrucciones en HULK son expresiones. En el presente 
+proyecto se implementará un intérprete de un subconjunto, de dicho lenguaje de programación,  compuesto solamente de expresiones que pueden escribirse en una 
+única línea. Cada tipo de expresión del HULK es tratada en una clase, por lo que abordaremos toda su funcionalidad a la par que explicamos el funcionamiento del 
+intérprete. Para ello nos apoyaremos de una gran variedad de ejemplos, desde los más sencillos hasta otros más complejos, y como es de suponer todos los ejemplos 
+son compilables para el programa.
+\newpage
+
+\section{Algoritmo del intérprete.}
+El algoritmo de este intérprete consiste en una vez insertada la instrucción del usuario fijarla, con ayuda de expresiones regulares, en una estructura: function, 
+let-in, print, if-else, llamados de función y operaciones de tipos: string, números o booleanos. Una vez caracterizada la línea se procede a parsearla de forma más 
+específica para determinar los tokens del tipo y su retorno. Este proceso es recursivo, dado que en una misma instrucción pueden haber varios tipos implementados
+uno dentro de otro, por lo que la labor del intérprete se convierte en ir descomponiendo la instrucción en un ente de tipo string, número o booleano, la línea del 
+usuario se define en la estructura que primero se detecte según una jerarquía conveniente que se utiliza para este proceso. Los errores, en su mayoría, se revelan de 
+la siguiente forma: los léxicos se van detectando a medida que se parsea la instrucción para separarla por tokens, los semánticos a la vez que se trabaja en el retorno 
+del tipo y los sintáticos cuando no hubo coincidencia con ninguna expresión regular se procesede a hacer un análisis para determinar a que modelo quiso referirse el 
+usuario
+
+\section{Clase HULK.}
+Es la encargada de recibir la instrucción del usuario y establecer, a través de expresiones regulares, con que tipo tiene coincidencia su sintaxis, este  proceso lo 
+realiza el método \underline{Identificar} y según el resultado envía la instrucción a la clase encargada de trabajar esa estructura o al método \underline{ErrorSintáctico} 
+para darle una rectificación al usuario lo más detallada posible. Hasta que la expresión no coincida con una estructura string, números o booleano, o las combinaciones
+de las operaciones en las que estos actúan (como es de suponer estos tipos están en el reglón más bajo de jerarquía definida para clasificar la línea introducida por el 
+usuario) el método Identificar se seguirá llamando recursivo, pasándose en lugar de la instrucción original una nueva instrucción en la que la estructura detectada 
+mutó a su retorno.
+
+\textbf{\underline{Métodos que la conforman: }} 
+
+\begin{itemize}
+    \item Identificar:  
+    \item ErrorSintáctico: 
+\end{itemize}
+
+
+\section{StaticMatrix}
+Esta clase es la encargada de crear la matriz donde estará toda la información disponible para dar respuesta a la búsqueda. \\ \\
+
+\textbf{\underline{Métodos que la conforman: }} 
+
+\begin{itemize}
+
+    \item ToDoMatrix: recibe el array content y se da la tarea de recorrerlo y mandar a limpiar el contenido de cada uno de sus documentos de tildes, mayúsculas y  signos de puntuación  y de formar con ellos el vocabulario del que dispondrá el programa. 
+    \item Cleaner: es el que elimina las tildes, las mayúsculas y signos de puntuación. 
+    \item RefillVocabulary: recibe los documentos uno a uno ya normalizados, los divide en palabras y guarda cada una en una posición de un array, recorre este y archiva cada palabra en un diccionario(Vocabulary), haciendo función de llaves a las cuales les corresponde un número único(Key).
+    \item RefillMatrix: recibe también un documento a la vez. Almacena el documento n en la fila n de la matriz y cada una de sus columnas representa una palabra. Cuando el flujo del programa llega a este método pasando como parámetro un documento, este anteriormente fue procesado por RefillVocabulary, por lo que su función es revelar con cada palabra el número que le corresponde en el diccionario Vocabulary, con ayuda del método KeyVocabulary. Este número representará la columna en la matriz, en esa posición se guardará la cantidad de veces que aparece la palabra entre la cantidad total de palabras del documento n. 
+    \item KeyVocabulary: recibe una palabra y devuelve el número que le corresponde en el diccionario Vocabulary. 
+
+\end{itemize}
+
+\textbf{\underline{Campos de clase: }} 
+
+\begin{itemize}
+
+    \item Key. Solo es utilizada por el método RefillVocabulary; consiste en un contador de palabras, es una variable global debido a la necesidad de que el conteo no se reinicie mientras se recorren los documentos.   
+    \item Vocabulary: contine todas las palabras que dispone el programa para la búsqueda. Es utilizado además de por el método RefillVocabulary, que lo rellena, y  otros que a partir de él crean una matriz (RefillMatrix) o vectores como se verá más adelante. \\
+
+\end{itemize}
+
+\textbf{\textit{¿CÓMO FUNCIONA? }} \\
+ Una vez abierto cada documento de la base de datos que se dispone en el array content, este es enviado al método ToDoMatrix de la clase StaticMatrix, este va recorriendo el array e interactuando en cada recorrido con los demás métodos de la clase como se muestra en el esquema: 
+
+\begin{figure}[h]
+    \includegraphics[scale= 0.53]{uno.png}
+\end{figure}
+
+Este proceso se realiza con cada documento, o sea con un for que dirige el método ToDoMatrix. Una vez terminado todo el recorrido quedará como resultado una matriz (textSplitter) donde se buscará las respuestas de las búsquedas. 
+
+\section{QueryVectors}
+Como toda la información de nuestro programa se ha convertido en una matriz para poder interactuar con ella necesitamos un ente de la misma especie, vectores. 
+La funcionalidad de esta clase es precisamente la creación de estos vectores, específicamente 2: el primero, un fiel seguidor de cada palabra del usuario y el segundo adiciona sinónimos disponibles de los vocablos introducidos. \\ \\
+
+\textbf{\underline{Métodos que la conforman: }} 
+
+\begin{itemize}
+    \item  QueryVector: Recibe la búsqueda del usuario y se encarga de crear ambos vectores. Para ello ordena limpiar la frase (con el método Cleaner de la clase StaticMatrix, visto anteriormente),  dividirla y hacerle corresponder a cada palabra una posición de un array (a través del método KeyVocabulary de la clase StaticMatrix, visto anteriormente), la cual rellena con una fórmula: \[(SearchRequests) * log(total\_de\_documentos / (TdocQuery)\] esta ecuación se entenderá mejor más adelante,  y solicita al método AddSynonyms. Como objetivo principal del programa es complacer en todo lo posible las necesidades del usuario, se crean facilidades que permiten una comunicación más específica, las cuales se analizan en este método con ayuda de SearchRequests. 
+    \item SearchRequests: determina el valor de las palabras de la búsqueda  para ello analiza si el usuario implementó alguna petición como la posibilidad de utilizar en la búsqueda caracteres especiales como: ! (le quita importancia a la palabra),  $\land$ (la palabra tiene que aparecer) y  \(*\) (le da importancia a la palabra, se pueden utilizar tantos asteriscos como se desee, la correspondencia de la cantidad de asteriscos y la importancia de la palabra es una función exponencial de la forma y = 2x, donde la x son la cantidad de asteriscos  e y la importancia de la palabra). 
+    \item TdocQuery: establece la cantidad de documentos que contienen la búsqueda para la fórmula utilizada por VectorQuery. 
+    \item AddSynonyms: Busca en un diccionario de sinónimos del que dispone el programa (Synonyms) equivalentes a las palabras que implementó el usuario y los incorpora a lo que será un segundo vector. 
+\end{itemize}
+ 
+\textbf{\textit{¿CÓMO FUNCIONA? }} \\
+Una vez que el usuario introduce una frase de búsqueda esta se envía al método VectorQuery que interactúa con otros métodos como se muestra en el esquema: 
+
+\begin{figure}[h]
+    \includegraphics[scale= 0.6]{dos.png}
+\end{figure}
+
+En este punto del flujo del programa ya tenemos establecido tanto la matriz y los vectores de búsqueda, ahora, ¿cómo se obtendrá el hallazgo? 
+ 
+ 
+\section{OperationsVectors}
+\textbf{\underline{Métodos que la conforman: }} 
+
+\begin{itemize}
+    \item Multiplication: Realiza el cálculo de la fórmula TF-IDF a través de la multiplicación de una matriz. \textbf {M{\tiny mxn }} (la base de datos) por una matriz \textbf {M{\tiny nx1}} (los vectores de búsqueda).\\
+\end{itemize}
+
+\begin{figure}[h]
+    \includegraphics[scale= 0.5]{tres.jpg}
+\end{figure}
+ 
+Este proceso se  hace con ambos vectores. El array es devuelto al método Query de la clase Moogle donde se determina el documento de mayor score fiel a la búsqueda y el segundo será el de mayor score de los documentos restantes incluyendo los del vector sugerencia. Con esta información  se completa title, snippet y score, respuesta de la búsqueda. 
+
+\end{document}

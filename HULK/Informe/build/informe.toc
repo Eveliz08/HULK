@@ -1,0 +1,13 @@
+\babel@toc {spanish}{}\relax 
+\babel@toc {spanish}{}\relax 
+\contentsline {section}{\numberline {1}Introducción}{3}{}%
+\contentsline {section}{\numberline {2}Algoritmo del intérprete.}{4}{}%
+\contentsline {section}{\numberline {3}Clase HULK.}{5}{}%
+\contentsline {section}{\numberline {4}Clase Utiles1 y Clase Utiles2}{6}{}%
+\contentsline {section}{\numberline {5}Clase Expresión}{7}{}%
+\contentsline {section}{\numberline {6}Clase Function}{8}{}%
+\contentsline {section}{\numberline {7}Clase Let-in}{9}{}%
+\contentsline {section}{\numberline {8}Clase Print}{10}{}%
+\contentsline {section}{\numberline {9}Clase If else}{11}{}%
+\contentsline {section}{\numberline {10}Clase Operar}{12}{}%
+\contentsline {section}{\numberline {11}Ejemplos}{13}{}%

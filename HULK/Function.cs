@@ -3,8 +3,6 @@ public class Function : Utiles2
 {
     public static string DeclararFunction(string instruction)
     {
-
-
         Match captura = Regex.Match(instruction, Expresiones.function());
         GroupCollection groups = captura.Groups;
 
@@ -141,7 +139,11 @@ public class Function : Utiles2
         {
             llamado = cuerpo_funcion[i];
             for (int j = 0; j < parametros_introducidos.Count; j++)
-                llamado = Variable_X_Valor(llamado, parametros[i][j], parametros_introducidos[j]);
+            {
+                 llamado = Variable_X_Valor(llamado, parametros[i][j], parametros_introducidos[j]);
+
+            }
+               
         }
         else
         {
@@ -168,7 +170,8 @@ public class Function : Utiles2
 
     }
 
-
+    public static double PI = Math.PI;
+    public static double E = Math.E;
     public static List<string> nombre_funciones = new List<string>();
     public static List<string[]> parametros = new List<string[]>();
     public static List<string> cuerpo_funcion = new List<string>();
